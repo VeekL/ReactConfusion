@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button
@@ -7,7 +7,6 @@ import {
 class DishDetail extends Component {
     
 }
-
     const Example = (props) => {
         return (
         <div>
