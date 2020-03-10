@@ -5,20 +5,73 @@ import {
 } from 'reactstrap';
 
 class DishDetail extends Component {
-    
+    constructor(props){
+        super(props);
+    }
+
+
+    renderDish(dish) {
+        if (dish != null)
+            return(
+                <div class="col-12 col-md-5 m-1">
+                <Card>
+                    <CardImg top src={dish.image} alt={dish.name} />
+                    <CardBody>
+                        <CardTitle>{dish.name}</CardTitle>
+                        <CardText>{dish.description}</CardText>
+                    </CardBody>
+                </Card>               
+                </div>
+
+            );
+        else
+            return(
+                <div>
+                    <CardText>{this.props.selectedDish}</CardText>
+                </div>
+            );
+    }
+
+    renderComments(comments){
+        if (comments.length > 0){
+            return (
+                <div className="col-12 col-md-5 m-1">
+                    <h4>Comments</h4>
+                    <ul className="list-unstyled">
+                        {comments.map(comm => {
+                            return (   
+                             <li key={comm.id}>{comm.comment}<br/><li>-- {comm.author} , {comm.date}</li>
+                            <br/></li>
+                            )
+                    })}
+                   </ul>
+               </div>
+            )
+        } else {
+            return(
+                <div></div>
+            ) 
+        }          
+    }
+
+    render() {
+        const {dish} = this.props;
+        if(dish){
+            return (
+                <div class="row">
+                    {this.renderDish(dish)}
+                    {this.renderComments(dish.comments)}
+                </div>
+            );
+        }
+        else{
+            return(
+                <div>
+                </div>
+            );
+        }
+    }
 }
-    const Example = (props) => {
-        return (
-        <div>
-            <Card>
-            <CardImg top width="100%" src="/assets/318x180.svg" alt="Card image cap" />
-            <CardBody>
-                <CardTitle>Card title</CardTitle>
-                <CardSubtitle>Card subtitle</CardSubtitle>
-                <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                <Button>Button</Button>
-            </CardBody>
-            </Card>
-        </div>
-        );
-    };
+
+
+export default DishDetail;
