@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle, Button
+  CardTitle
 } from 'reactstrap';
 
 class DishDetail extends Component {
@@ -9,20 +9,18 @@ class DishDetail extends Component {
         super(props);
     }
 
-
     renderDish(dish) {
         if (dish != null)
             return(
                 <div class="col-12 col-md-5 m-1">
-                <Card>
-                    <CardImg top src={dish.image} alt={dish.name} />
-                    <CardBody>
-                        <CardTitle>{dish.name}</CardTitle>
-                        <CardText>{dish.description}</CardText>
-                    </CardBody>
-                </Card>               
+                    <Card>
+                        <CardImg top src={dish.image} alt={dish.name} />
+                        <CardBody>
+                            <CardTitle>{dish.name}</CardTitle>
+                            <CardText>{dish.description}</CardText>
+                        </CardBody>
+                    </Card>               
                 </div>
-
             );
         else
             return(
@@ -40,7 +38,7 @@ class DishDetail extends Component {
                     <ul className="list-unstyled">
                         {comments.map(comm => {
                             return (   
-                             <li key={comm.id}>{comm.comment}<br/><li>-- {comm.author} , {comm.date}</li>
+                             <li key={comm.id}>{comm.comment}<br/><li>-- {comm.author} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comm.date)))}</li>
                             <br/></li>
                             )
                     })}
@@ -58,9 +56,11 @@ class DishDetail extends Component {
         const {dish} = this.props;
         if(dish){
             return (
-                <div class="row">
-                    {this.renderDish(dish)}
-                    {this.renderComments(dish.comments)}
+                <div className="container">
+                    <div className="row">
+                        {this.renderDish(dish)}
+                        {this.renderComments(dish.comments)}
+                    </div>
                 </div>
             );
         }
