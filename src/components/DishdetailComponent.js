@@ -6,7 +6,7 @@ import { Breadcrumb, BreadcrumbItem,
 import { Link } from 'react-router-dom';
 
 function RenderDish({dish}){
-    if (dish != null)
+    if (dish != null){
         return(
             <div class="col-12 col-md-5 m-1">
                 <Card>
@@ -18,13 +18,16 @@ function RenderDish({dish}){
                 </Card>               
             </div>
         );
-    else
+    }
+    else{
         return(
             <div>
                 <CardText>{this.props.selectedDish}</CardText>
             </div>
         );
-    }
+    };
+
+}
 
 function RenderComments({comments}){
     if (comments != null){
