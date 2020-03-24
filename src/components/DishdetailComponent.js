@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
-import { Breadcrumb, BreadcrumbItem, Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
+import { Breadcrumb, BreadcrumbItem, Nav, NavItem,
     Button, Modal, ModalHeader, ModalBody, Card, CardImg, CardText, CardBody, CardTitle,
-    Form, FormGroup, Input, Label, Col } from 'reactstrap';
-    import {Control, Field} from 'react-redux-form';    
-import { Link, NavLink } from 'react-router-dom';
+    Row, Label, Col } from 'reactstrap';
+import {Control, Errors, LocalForm} from 'react-redux-form';        
+import { Link} from 'react-router-dom';
+
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => val && (val.length >= len);
 
 function RenderDish({dish}){
     if (dish != null){
@@ -60,7 +64,7 @@ class CommentForm extends Component{
     constructor(props){
         super(props);
         this.state ={
-            isModalOpen: false
+            isModalOpen: false,
         };
 
         this.toggleModal = this.toggleModal.bind(this);
@@ -73,15 +77,13 @@ class CommentForm extends Component{
         });
     }
 
-    handleSubmitComment(event){
-        this.toggleModal();
-        alert("Rating: " + this.rating);
-        event.preventDefault();
+    handleSubmitComment(values) {
+        console.log('Current State is: ' + JSON.stringify(values));
+        alert('Current State is: ' + JSON.stringify(values));
     }
 
-
-
     render(){
+
         return(
             <React.Fragment>
                 <Nav className="ml-auto" navbar>
@@ -92,30 +94,56 @@ class CommentForm extends Component{
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
                     <ModalBody>
-                        <Form onSubmit={this.handleSubmitComment}>
-                            <FormGroup>
-                                <Label htmlFor="rating">Rating</Label>
-                                <Field
-                                    name="min"
-                                    component="input"
-                                    type="number"
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="name">Your Name</Label>
-                                <Input type="text" id="name" name="name"
-                                    innerRef={(input) => this.name = input}  />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="comment">Comment</Label>
-                                <Col md={14}>
+                        <LocalForm onSubmit={(values) => this.handleSubmitComment(values)}>
+                            <Label htmlFor="rating" >Rating</Label>
+                            <Row className="form-group">
+                                <Col>
+                                    <Control.select model=".rating" id="rating" name="rating"
+                                        className="form-control">
+                                        <option value='1'>1</option>
+                                        <option value='2'>2</option>
+                                        <option value='3'>3</option>
+                                        <option value='4'>4</option>
+                                        <option value='5'>5</option>
+                                    </Control.select>
+                                </Col>
+                            </Row>
+                            <Label htmlFor="author">Your Name</Label>
+                            <Row className="form-group">
+                                <Col>
+                                    <Control.text model=".author" id="author" name="author"
+                                        className="form-control"
+                                        validators={{
+                                            required, minLength: minLength(3), maxLength: maxLength(15)
+                                        }}/>
+                                    <Errors
+                                        className="text-danger"
+                                        model=".author"
+                                        show="touched"
+                                        messages={{
+                                            required: 'Required',
+                                            minLength: 'Must be greater than 2 characters',
+                                            maxLength: 'Must be 15 characters or less'
+                                        }}
+                                        />
+                                </Col>
+                            </Row>
+                            <Label htmlFor="message">Comment</Label>
+                            <Row className="form-group">
+                                <Col>
                                     <Control.textarea model=".message" id="message" name="message"
                                         rows="6"
-                                        className="form-control" />
+                                        className="form-control"/>
                                 </Col>
-                            </FormGroup>
-                            <Button type="submit" value="submit" color="primary">Submit</Button>
-                        </Form>
+                            </Row>
+                            <Row className="form-group">
+                                <Col>
+                                    <Button type="submit" color="primary">
+                                    Submit
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </LocalForm>
                     </ModalBody>
                 </Modal>
             </React.Fragment>
