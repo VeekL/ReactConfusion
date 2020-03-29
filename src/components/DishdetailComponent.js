@@ -14,7 +14,7 @@ const minLength = (len) => (val) => val && (val.length >= len);
 function RenderDish({dish}){
     if (dish != null){
         return(
-            <div class="col-12 col-md-5 m-1">
+            <div className="col-12 col-md-5 m-1">
                 <Card>
                     <CardImg top src={baseUrl + dish.image} alt={dish.name} />
                     <CardBody>
