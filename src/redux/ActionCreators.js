@@ -1,5 +1,4 @@
 import * as ActionTypes from './ActionTypes';
-import { DISHES } from '../shared/dishes';
 import { baseUrl } from '../shared/baseUrl';
 
 export const addComment = (comment) => ({
@@ -211,7 +210,7 @@ export const postFeedback = (firstname, lastname, telnum, email, agree, contactT
     })
     .then(response => {
         if (response.ok) {
-          return 'Thank you for your feedback!', response;
+          return 'Thank you for your feedback!' + response;
         } else {
           var error = new Error('Error ' + response.status + ': ' + response.statusText);
           error.response = response;
